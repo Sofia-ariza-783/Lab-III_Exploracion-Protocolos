@@ -35,7 +35,8 @@ public class browser extends JFrame {
             url = urlField.getText();
             try {
                 GenerateURLInfo(url);
-                displayArea.setPage("Archivo generado");
+                String filePath = System.getProperty("user.dir") + "/Archivo.html";
+                displayArea.setPage("file:///" + filePath);
 
             } catch (IOException ex) {
                 displayArea.setText("Error loading URL: " + ex.getMessage());
