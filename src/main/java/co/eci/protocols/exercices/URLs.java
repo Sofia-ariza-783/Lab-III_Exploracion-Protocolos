@@ -15,6 +15,7 @@ public class URLs {
             int getPort = sampleURL.getPort();
             String query = sampleURL.getQuery();
             String file = sampleURL.getFile();
+            String ref = sampleURL.getRef();
         } catch (MalformedURLException ex) {
             ex.printStackTrace();
         }
