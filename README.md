@@ -5,6 +5,7 @@
 Nombres:
 * Sofia Nicolle Ariza Goenaga
 * Daniel Palacios Moreno
+* Marlio Jose Charry Espitia
 
 ---
 

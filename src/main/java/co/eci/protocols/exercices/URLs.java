@@ -5,7 +5,7 @@ import java.net.URL;
 
 public class URLs {
 
-    public void methods(){
+    public static void methods(){
         try {
             URL sampleURL = new URL("https://docs.oracle.com/javase/tutorial/networking/index.html");
 
@@ -16,6 +16,15 @@ public class URLs {
             String query = sampleURL.getQuery();
             String file = sampleURL.getFile();
             String ref = sampleURL.getRef();
+
+            System.out.println("Reporte URL \n"+
+                    "Protocolo: " + protocol+
+                    "\nAutoridad: " + authority+
+                    "\nHost: "+ host +
+                    "\nPuerto: "+getPort+
+                    "\nQuery: " + query+
+                    "\nArchivo: " + file+
+                    "\nReferencia: " + ref);
         } catch (MalformedURLException ex) {
             ex.printStackTrace();
         }
