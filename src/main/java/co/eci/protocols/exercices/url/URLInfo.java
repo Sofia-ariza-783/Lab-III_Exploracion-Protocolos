@@ -1,4 +1,4 @@
-package co.eci.protocols.exercices;
+package co.eci.protocols.exercices.url;
 
 import java.io.FileWriter;
 import java.io.IOException;

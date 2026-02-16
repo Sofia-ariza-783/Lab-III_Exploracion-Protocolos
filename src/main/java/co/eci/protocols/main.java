@@ -2,7 +2,7 @@ package co.eci.protocols;
 
 import co.eci.protocols.GUI.browser;
 
-import static co.eci.protocols.exercices.URLInfo.GenerateURLInfo;
+import static co.eci.protocols.exercices.url.URLInfo.GenerateURLInfo;
 
 
 public class main {

@@ -1,16 +1,8 @@
-package co.eci.protocols.exercices;
+package co.eci.protocols.exercices.sockets;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
-
-public class EchoServerFuncSwap {
+import java.net.*;
+import java.io.*;
+public class EchoServer {
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = null;
         try {
@@ -31,27 +23,16 @@ public class EchoServerFuncSwap {
                 new InputStreamReader(
                         clientSocket.getInputStream()));
         String inputLine, outputLine;
-
-        String fun = "cos";
-        Map<String, Function<Double, Double>> functions = new HashMap<>();
-        functions.put("cos", x -> (double) Math.cos(x));
-        functions.put("sin", x -> (double) Math.sin(x));
-        functions.put("tan", x -> (double) Math.tan(x));
-
         while ((inputLine = in.readLine()) != null) {
-            String entry = inputLine.split(":")[0];
-
-            if (entry.equals("fun")) {
-                if (!functions.containsKey(inputLine.split(":")[1])) {
-                    out.println("Operacion no valida");
-                    continue;
-                }
-                fun = inputLine.split(":")[1];
-                out.println("Operacion cambiada");
-                continue;
+            try{
+                int number = Integer.parseInt(inputLine);
+                System.out.println("Numero original:" + inputLine);
+                outputLine = "Respuesta numero al cuadrado: " + (number * number) ;
+            } catch (NumberFormatException e){
+                System.out.println("Mensaje original:" + inputLine);
+                outputLine = "Respuesta: no es un numero" ;
             }
 
-            outputLine = String.valueOf(functions.get(fun).apply(Double.parseDouble(inputLine)));
             out.println(outputLine);
             if (outputLine.equals("Respuesta numero al cuadrado: 1"))
                 break;

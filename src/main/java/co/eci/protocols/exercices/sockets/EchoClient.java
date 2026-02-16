@@ -1,4 +1,4 @@
-package co.eci.protocols.exercices;
+package co.eci.protocols.exercices.sockets;
 
 import java.io.*;
 import java.net.*;

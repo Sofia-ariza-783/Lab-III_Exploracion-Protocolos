@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-import static co.eci.protocols.exercices.URLInfo.GenerateURLInfo;
+import static co.eci.protocols.exercices.url.URLInfo.GenerateURLInfo;
 
 public class browser extends JFrame {
     private JTextField urlField;

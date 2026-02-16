@@ -1,8 +1,9 @@
-package co.eci.protocols.exercices;
+package co.eci.protocols.exercices.webService;
 
 import java.net.*;
 import java.io.*;
-public class EchoServer {
+
+public class HttpServer {
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = null;
         try {
@@ -13,6 +14,7 @@ public class EchoServer {
         }
         Socket clientSocket = null;
         try {
+            System.out.println("Listo para recibir ...");
             clientSocket = serverSocket.accept();
         } catch (IOException e) {
             System.err.println("Accept failed.");
@@ -24,22 +26,27 @@ public class EchoServer {
                         clientSocket.getInputStream()));
         String inputLine, outputLine;
         while ((inputLine = in.readLine()) != null) {
-            try{
-                int number = Integer.parseInt(inputLine);
-                System.out.println("Numero original:" + inputLine);
-                outputLine = "Respuesta numero al cuadrado: " + (number * number) ;
-            } catch (NumberFormatException e){
-                System.out.println("Mensaje original:" + inputLine);
-                outputLine = "Respuesta: no es un numero" ;
-            }
-
-            out.println(outputLine);
-            if (outputLine.equals("Respuesta numero al cuadrado: 1"))
+            System.out.println("Received: " + inputLine);
+            if (!in.ready()) {
                 break;
+            }
         }
+        String body = "<!DOCTYPE html>"
+                + "<html><head><meta charset=\"UTF-8\"><title>My Web Site</title></head>"
+                + "<body>My Web Site</body></html>";
+
+        String response =
+                "HTTP/1.1 200 OK\r\n"
+                        + "Content-Type: text/html; charset=UTF-8\r\n"
+                        + "Content-Length: " + body.getBytes("UTF-8").length + "\r\n"
+                        + "Connection: close\r\n"
+                        + "\r\n"
+                        + body;
+
+        out.print(response);
         out.close();
         in.close();
         clientSocket.close();
         serverSocket.close();
     }
-} 
+}
