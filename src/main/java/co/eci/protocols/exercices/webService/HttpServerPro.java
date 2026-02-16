@@ -43,7 +43,7 @@ public class HttpServerPro {
                         + "<body>"
                         + "<h1>Hello World</h1>"
                         + "<ul>"
-                        + "<li><a href=\"/images/0c8513d4db5e903e501f8461d4146345.jpg\" download >0c8513d4db5e903e501f8461d4146345.jpg</a></li>"
+                        + "<li><a href=\"/images/0c8513d4db5e903e501f8461d4146345.jpg\">0c8513d4db5e903e501f8461d4146345.jpg</a></li>"
                         + "<li><a href=\"/images/5e196899ff4b98d4352d1ba7337db1ee.jpg\">5e196899ff4b98d4352d1ba7337db1ee.jpg</a></li>"
                         + "<li><a href=\"/images/OIP.png\">OIP.png</a></li>"
                         + "</ul>"
