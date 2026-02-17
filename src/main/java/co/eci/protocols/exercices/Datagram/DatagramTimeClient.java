@@ -42,7 +42,6 @@ public final class DatagramTimeClient implements Runnable {
             final byte[] payload = TimeProtocol.REQUEST_MESSAGE.getBytes(TimeProtocol.CHARSET);
 
             while (running) {
-                // 1) Enviar solicitud
                 DatagramPacket request = new DatagramPacket(payload, payload.length, serverAddress, port);
                 try {
                     s.send(request);
@@ -50,7 +49,6 @@ public final class DatagramTimeClient implements Runnable {
                     System.out.println("[" + Instant.now() + "] No se pudo enviar: " + e.getMessage());
                 }
 
-                // 2) Recibir respuesta (timeout)
                 try {
                     DatagramPacket response = new DatagramPacket(
                             new byte[TimeProtocol.BUFFER_SIZE],

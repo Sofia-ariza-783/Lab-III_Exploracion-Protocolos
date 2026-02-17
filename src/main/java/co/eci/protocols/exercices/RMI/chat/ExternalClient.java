@@ -6,6 +6,10 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
+/**
+ * Cliente externo de chat RMI que actúa como servidor y cliente.
+ * Permite enviar mensajes a un cliente interno y recibir mensajes de él.
+ */
 public class ExternalClient implements ChatUser {
     private static Scanner scanner = new Scanner(System.in);
     private ChatUser echoServer;
@@ -23,6 +27,10 @@ public class ExternalClient implements ChatUser {
         }
     }
 
+    /**
+     * Metodo principal que inicia el cliente externo.
+     * Solicita IP y puerto del usuario interno para establecer conexión.
+     */
     public static void main(String[] args) {
         System.out.print("Ingrese la ip del User2: ");
         String ipAddress = scanner.nextLine();
@@ -32,6 +40,12 @@ public class ExternalClient implements ChatUser {
         ec.ejecutaServicio(ipAddress, port, "internalUser");
     }
 
+    /**
+     * Ejecuta el servicio de chat permitiendo enviar mensajes al usuario interno.
+     * @param ipRmiregistry IP del registro RMI del usuario interno
+     * @param puertoRmiRegistry Puerto del registro RMI del usuario interno
+     * @param nombreServicio Nombre del servicio a buscar
+     */
     public void ejecutaServicio(String ipRmiregistry, int puertoRmiRegistry,
                                 String nombreServicio) {
         System.out.println("Inicio de la conversación");
@@ -56,6 +70,9 @@ public class ExternalClient implements ChatUser {
         scanner.close();
     }
 
+    /**
+     * Muestra el prompt del chat con timestamp.
+     */
     private void showPrompt() {
         String timestamp = java.time.LocalTime.now().format(
                 java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss")
@@ -63,6 +80,11 @@ public class ExternalClient implements ChatUser {
         System.out.print("[" + timestamp + "] [ User1 ]: ");
     }
 
+    /**
+     * Recibe y muestra un mensaje del usuario interno.
+     * @param cadena Mensaje recibido
+     * @throws RemoteException Si ocurre un error en la comunicación RMI
+     */
     public void messaging(String cadena) throws RemoteException {
         System.out.println("User1: " + cadena);
     }
