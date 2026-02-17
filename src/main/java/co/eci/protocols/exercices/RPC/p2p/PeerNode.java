@@ -7,13 +7,11 @@ public class PeerNode {
     private final String peerId;
     private final int listenPort;
     private final TrackerClient tracker;
-
     public PeerNode(String peerId, int listenPort, TrackerClient tracker) {
         this.peerId = peerId;
         this.listenPort = listenPort;
         this.tracker = tracker;
     }
-
     public void start() throws IOException {
 // 1) registrarse 
         tracker.register(peerId, listenPort);
@@ -23,7 +21,6 @@ public class PeerNode {
 // 3) consola de comandos 
         consoleLoop();
     }
-
     private void listenLoop() {
         try (ServerSocket ss = new ServerSocket(listenPort)) {
             System.out.println("[PEER " + peerId + "] Listening on " + listenPort);
