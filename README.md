@@ -52,6 +52,10 @@ otro aplicativo del mismo tipo en un servidor remoto para comenzar una conversac
 dirección IP y un puerto antes de conectarse con el cliente que se desea. Igualmente, debe solicitar un puerto antes de
 iniciar para que publique el objeto que recibe los llamados remotos en dicho puerto.
 
+![img_2.png](img_2.png)
+
+![img_3.png](img_3.png)
+
 # Ejercicio 6.5
 
 En este ejercicio utilizamos el código dado en la guía, y lo ejecutamos de acuerdo a las instrucciones con dos Peers, A
@@ -61,3 +65,8 @@ y B. Como se indicó, enviamos un mensaje de A a B con el comando especificado, 
   ![img.png](img.png)
 * Peer B
   ![img_1.png](img_1.png)
+
+El código implementa dos sistemas de comunicación en red: un mecanismo RPC para una calculadora, donde un cliente envía
+solicitudes a un servidor que ejecuta operaciones aritméticas y retorna los resultados; y una red peer-to-peer con un
+tracker central que permite el descubrimiento de peers, los cuales se conectan directamente entre sí mediante TCP para
+intercambiar mensajes de texto. Ambos ejemplos utilizan sockets y protocolos basados en texto para la comunicación.
