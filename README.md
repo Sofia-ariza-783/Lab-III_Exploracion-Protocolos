@@ -45,6 +45,12 @@ para este ejercicio teniamos que hacer un servidor el cual nos permitiera realiz
 6. despues si la persona necesita la imagen para ser descargada o vista en una pestaña aparte lo lee como bytes y se los manda al cliente 
 7. si no existe la imagen o la persona intenta crear una request indebida muestara un 404 not found
 
+# Ejercicio 5.2.1
+En este ejercicio se pedía implementar, usando UDP (Datagramas), un sistema cliente-servidor donde el servidor responde con la hora actual cada vez que recibe una solicitud, y el cliente consulta esa hora cada 5 segundos; si en algún momento no llega respuesta (por ejemplo, porque el servidor se apaga durante la prueba), el cliente debe seguir ejecutándose y mantener la última hora recibida, reintentando hasta que el servidor vuelva a estar disponible y entonces actualizarse nuevamente. Para cumplirlo, se dejó el servidor escuchando en un bucle atendiendo múltiples datagramas y se mejoró el cliente con un timeout de recepción y un ciclo periódico, de forma que no quede bloqueado indefinidamente y pueda tolerar la caída y recuperación del servidor sin detenerse.
+![img.png](img/ServerYClient1.png)
+![img_1.png](img/Client.png)
+![img_2.png](img/ServeryClient2.png)
+En la prueba se ejecutaron el servidor y el cliente UDP en IntelliJ (dos instancias con “Allow multiple instances”). En la primera captura, con ambos activos, el cliente recibe la hora del servidor cada 5 segundos y la muestra como “Actualizado”. Luego se detuvo el servidor con Stop y, en la segunda captura, el cliente siguió funcionando mostrando “Sin respuesta. Mantengo…”, porque usa un timeout y conserva la última hora recibida. Finalmente, al volver a iniciar el servidor, el cliente se recuperó automáticamente y en la tercera captura volvió a actualizar la hora sin reiniciarse.
 # Ejercicio 6.4.1
 
 En este ejercicio se plantea realizar un chat utilizando RMI, donde escribiremos un aplicativo que pueda conectarse a
