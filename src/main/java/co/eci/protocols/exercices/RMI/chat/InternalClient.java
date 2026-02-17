@@ -34,7 +34,6 @@ public class InternalClient implements ChatUser {
 
     public void ejecutaServicio(String ipRmiregistry, int puertoRmiRegistry,
                                 String nombreServicio) {
-        System.out.print("Tu: ");
         String inputLine = scanner.nextLine();
         while (!inputLine.equals("Salir")) {
             try {
@@ -46,7 +45,6 @@ public class InternalClient implements ChatUser {
                 System.err.println("Hay un problema:");
                 e.printStackTrace();
             }
-            System.out.print("Tu: ");
             inputLine = scanner.nextLine();
         }
         scanner.close();

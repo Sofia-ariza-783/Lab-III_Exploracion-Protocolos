@@ -34,7 +34,7 @@ public class ExternalClient implements ChatUser {
 
     public void ejecutaServicio(String ipRmiregistry, int puertoRmiRegistry,
                                 String nombreServicio) {
-        System.out.print("Tu: ");
+        System.out.println("Inicio de la conversación");
         String inputLine = scanner.nextLine();
         while (!inputLine.equals("Salir")) {
             try {
@@ -46,10 +46,16 @@ public class ExternalClient implements ChatUser {
                 System.err.println("Hay un problema:");
                 e.printStackTrace();
             }
-            System.out.print("Tu: ");
             inputLine = scanner.nextLine();
         }
         scanner.close();
+    }
+
+    private void showPrompt() {
+        String timestamp = java.time.LocalTime.now().format(
+                java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss")
+        );
+        System.out.print("[" + timestamp + "] [ User1 ]: ");
     }
 
     public void messaging(String cadena) throws RemoteException {
