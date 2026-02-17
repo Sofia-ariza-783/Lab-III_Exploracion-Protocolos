@@ -13,7 +13,7 @@ public class ExternalClient implements ChatUser {
     public ExternalClient(String ipRMIregistry,
                           int puertoRMIregistry, String nombreDePublicacion) {
         try {
-            echoServer = (ChatUser) UnicastRemoteObject.exportObject(this, 0);
+            echoServer = (ChatUser) UnicastRemoteObject.exportObject(this, 23002);
             Registry registry = LocateRegistry.getRegistry(ipRMIregistry, puertoRMIregistry);
             registry.rebind(nombreDePublicacion, echoServer);
             System.out.println("Echo server ready...");
@@ -35,18 +35,23 @@ public class ExternalClient implements ChatUser {
     public void ejecutaServicio(String ipRmiregistry, int puertoRmiRegistry,
                                 String nombreServicio) {
         System.out.println("Inicio de la conversación");
-        String inputLine = scanner.nextLine();
+        String inputLine = "";
         while (!inputLine.equals("Salir")) {
             try {
+                inputLine = scanner.nextLine();
                 Registry registry = LocateRegistry.getRegistry(ipRmiregistry, puertoRmiRegistry);
                 echoServer = (ChatUser) registry.lookup(nombreServicio);
 
+                System.out.print("\033[1A");
+                System.out.print("\033[2K");
+                System.out.print("\r");
+
+                System.out.println("tu: " + inputLine);
                 echoServer.messaging(inputLine);
             } catch (Exception e) {
                 System.err.println("Hay un problema:");
                 e.printStackTrace();
             }
-            inputLine = scanner.nextLine();
         }
         scanner.close();
     }
@@ -59,6 +64,6 @@ public class ExternalClient implements ChatUser {
     }
 
     public void messaging(String cadena) throws RemoteException {
-        System.out.println("\nUser1: " + cadena);
+        System.out.println("User1: " + cadena);
     }
 }
