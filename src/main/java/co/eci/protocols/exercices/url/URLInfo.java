@@ -5,10 +5,19 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * Utilidad para extraer y generar reportes de informacion de URLs.
+ * Parsea una URL y genera un archivo HTML con sus componentes.
+ */
 public class URLInfo {
 
     //Ejercicio 3.2
-    public static void  GenerateURLInfo(String url){
+    /**
+     * Genera un reporte HTML con la informacion desglosada de una URL.
+     * Extrae protocolo, host, puerto, query y otros componentes.
+     * @param url URL a analizar y procesar
+     */
+    public static void GenerateURLInfo(String url){
         try {
             URL sampleURL = new URL(url);
             String protocol = sampleURL.getProtocol();

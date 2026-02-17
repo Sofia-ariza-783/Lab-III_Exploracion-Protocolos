@@ -4,7 +4,19 @@ import java.net.*;
 import java.io.*;
 
 //Ejercicio 4.4
+
+/**
+ * Servidor HTTP basico que responde con una pagina HTML simple.
+ * Escucha en el puerto 35000 y sirve un contenido estatico.
+ */
 public class HttpServer {
+
+    /**
+     * Metodo principal que inicia el servidor HTTP basico.
+     * Escucha peticiones y responde con una pagina HTML.
+     * @param args Argumentos de linea de comandos (no utilizados)
+     * @throws IOException Si ocurre un error de entrada/salida
+     */
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = null;
         try {

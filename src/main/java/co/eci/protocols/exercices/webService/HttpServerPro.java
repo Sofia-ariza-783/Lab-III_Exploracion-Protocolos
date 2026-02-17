@@ -9,12 +9,22 @@ import java.nio.file.Paths;
 
 
 //Ejercicio 4.5.1
+/**
+ * Servidor HTTP mejorado que sirve archivos estaticos.
+ * Soporta diferentes tipos de contenido y manejo de errores HTTP.
+ */
 public class HttpServerPro {
 
     private static final Path WEB_ROOT = Paths.get(
             "src", "main", "java", "co", "eci", "protocols", "exercices", "webService", "info"
     );
 
+    /**
+     * Metodo principal que inicia el servidor HTTP profesional.
+     * Escucha peticiones y sirve archivos desde el directorio web.
+     * @param args Argumentos de linea de comandos (no utilizados)
+     * @throws IOException Si ocurre un error de entrada/salida
+     */
     public static void main(String[] args) throws IOException {
         System.out.println("Working dir: " + System.getProperty("user.dir"));
 
@@ -31,6 +41,11 @@ public class HttpServerPro {
         }
     }
 
+    /**
+     * Maneja una peticion HTTP entrante.
+     * @param clientSocket Socket del cliente conectado
+     * @throws IOException Si ocurre un error de entrada/salida
+     */
     private static void handleRequest(Socket clientSocket) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         OutputStream out = clientSocket.getOutputStream();
@@ -87,6 +102,14 @@ public class HttpServerPro {
         out.flush();
     }
 
+    /**
+     * Envía una respuesta de texto simple con cabeceras HTTP.
+     * @param out Stream de salida del cliente
+     * @param status Codigo de estado HTTP
+     * @param contentType Tipo de contenido
+     * @param body Cuerpo de la respuesta
+     * @throws IOException Si ocurre un error de entrada/salida
+     */
     private static void sendText(OutputStream out, String status, String contentType, String body) throws IOException {
         byte[] bytes = body.getBytes("UTF-8");
         String headers =
@@ -100,6 +123,11 @@ public class HttpServerPro {
         out.flush();
     }
 
+    /**
+     * Determina el tipo de contenido segun la extension del archivo.
+     * @param filePath Ruta del archivo a analizar
+     * @return Tipo MIME del contenido
+     */
     private static String guessContentType(Path filePath) {
         String name = filePath.getFileName().toString().toLowerCase();
         if (name.endsWith(".html") || name.endsWith(".htm")) return "text/html; charset=UTF-8";

@@ -4,8 +4,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 //Ejercicio 3.1
+
+/**
+ * Demostracion de metodos para extraer componentes de una URL.
+ * Muestra por consola la informacion desglosada de una URL de ejemplo.
+ */
 public class URLs {
 
+    /**
+     * Demuestra los metodos de extraccion de componentes de URL.
+     * Parsea una URL de Oracle y muestra sus partes por consola.
+     */
     public static void methods(){
         try {
             URL sampleURL = new URL("https://docs.oracle.com/javase/tutorial/networking/index.html");
