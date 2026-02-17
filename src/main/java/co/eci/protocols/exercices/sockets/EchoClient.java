@@ -26,7 +26,7 @@ public class EchoClient {
         String userInput;
         while ((userInput = stdIn.readLine()) != null) {
             out.println(userInput);
-            System.out.println("echo: " + in.readLine());
+            System.out.println("reply: " + in.readLine());
         }
         out.close();
         in.close();
