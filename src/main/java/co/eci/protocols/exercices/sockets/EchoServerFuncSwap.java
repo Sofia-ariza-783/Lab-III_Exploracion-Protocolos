@@ -11,7 +11,19 @@ import java.util.Map;
 import java.util.function.Function;
 
 //Ejercicio 4.3.2
+
+/**
+ * Servidor de eco con funciones matematicas intercambiables.
+ * Permite cambiar entre operaciones trigonometricas en tiempo de ejecucion.
+ */
 public class EchoServerFuncSwap {
+
+    /**
+     * Metodo principal que inicia el servidor con funciones intercambiables.
+     * Escucha en el puerto 35000 y soporta operaciones cos, sin, tan.
+     * @param args Argumentos de linea de comandos (no utilizados)
+     * @throws IOException Si ocurre un error de entrada/salida
+     */
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = null;
         try {

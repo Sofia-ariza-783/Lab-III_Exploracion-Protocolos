@@ -3,7 +3,19 @@ package co.eci.protocols.exercices.sockets;
 import java.io.*;
 import java.net.*;
 //Ejercicio 4.3.1
+
+/**
+ * Cliente de eco que se conecta a un servidor mediante sockets.
+ * Envía mensajes al servidor y recibe respuestas en tiempo real.
+ */
 public class EchoClient {
+
+    /**
+     * Metodo principal que inicia el cliente de eco.
+     * Establece conexion con el servidor en localhost puerto 35000.
+     * @param args Argumentos de linea de comandos (no utilizados)
+     * @throws IOException Si ocurre un error de entrada/salida
+     */
     public static void main(String[] args) throws IOException {
         Socket echoSocket = null;
         PrintWriter out = null;

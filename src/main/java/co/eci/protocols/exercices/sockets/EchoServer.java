@@ -3,7 +3,19 @@ package co.eci.protocols.exercices.sockets;
 import java.net.*;
 import java.io.*;
 //Ejercicio 4.3.1
+
+/**
+ * Servidor de eco que procesa mensajes de clientes mediante sockets.
+ * Calcula el cuadrado de numeros o responde mensajes no numericos.
+ */
 public class EchoServer {
+
+    /**
+     * Metodo principal que inicia el servidor de eco.
+     * Escucha en el puerto 35000 y procesa un cliente a la vez.
+     * @param args Argumentos de linea de comandos (no utilizados)
+     * @throws IOException Si ocurre un error de entrada/salida
+     */
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = null;
         try {
