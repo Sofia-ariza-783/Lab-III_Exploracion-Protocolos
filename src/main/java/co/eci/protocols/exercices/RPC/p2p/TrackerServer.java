@@ -5,18 +5,35 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Servidor tracker que gestiona la red P2P.
+ * Mantiene el registro de peers activos y facilita la descubrimiento.
+ */
 public class TrackerServer {
     private final int port;
     private final Map<String, PeerInfo> peers = new ConcurrentHashMap<>();
 
+    /**
+     * Constructor que inicializa el servidor tracker.
+     * @param port Puerto de escucha del tracker
+     */
     public TrackerServer(int port) {
         this.port = port;
     }
 
+    /**
+     * Metodo principal que inicia el servidor tracker.
+     * @param args Argumentos de linea de comandos (no utilizados)
+     * @throws Exception Si ocurre un error al iniciar el servidor
+     */
     public static void main(String[] args) throws Exception {
         new TrackerServer(6000).start();
     }
 
+    /**
+     * Inicia el servidor y acepta conexiones de clientes.
+     * @throws IOException Si ocurre un error de red
+     */
     public void start() throws IOException {
         try (ServerSocket ss = new ServerSocket(port)) {
             System.out.println("[TRACKER] Listening on " + port);
@@ -27,6 +44,10 @@ public class TrackerServer {
         }
     }
 
+    /**
+     * Maneja la conexion de un cliente.
+     * @param client Socket del cliente conectado
+     */
     private void handle(Socket client) {
         try (client;
              BufferedReader in = new BufferedReader(new
@@ -72,6 +93,10 @@ public class TrackerServer {
         }
     }
 
+    /**
+     * Construye la lista de peers en formato string.
+     * @return Lista de peers formateada
+     */
     private String buildList() {
         // PEERS peer1@ip:port,peer2@ip:port
         StringBuilder sb = new StringBuilder("PEERS ");
@@ -84,6 +109,9 @@ public class TrackerServer {
         return sb.toString();
     }
 
+    /**
+     * Informacion de un peer registrado.
+     */
     private static class PeerInfo {
         final String peerId;
         final String ip;

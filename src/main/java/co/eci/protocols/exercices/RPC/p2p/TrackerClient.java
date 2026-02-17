@@ -4,20 +4,38 @@ import java.io.*;
 import java.net.Socket;
 import java.util.*;
 
+/**
+ * Cliente para comunicarse con el servidor tracker P2P.
+ * Permite registrar peers y obtener la lista de peers activos.
+ */
 public class TrackerClient {
     private final String host;
     private final int port;
 
+    /**
+     * Constructor que inicializa el cliente del tracker.
+     * @param host Dirección del servidor tracker
+     * @param port Puerto del servidor tracker
+     */
     public TrackerClient(String host, int port) {
         this.host = host;
         this.port = port;
     }
 
+    /**
+     * Registra un peer en el tracker.
+     * @param peerId Identificador del peer
+     * @param peerPort Puerto del peer
+     */
     public void register(String peerId, int peerPort) {
         String resp = request("REGISTER " + peerId + " " + peerPort);
         if (!resp.startsWith("OK")) throw new RuntimeException("Register failed: " + resp);
     }
 
+    /**
+     * Obtiene la lista de peers registrados.
+     * @return Mapa de peers con sus direcciones
+     */
     public Map<String, HostPort> listPeers() {
         String resp = request("LIST");
         if (!resp.startsWith("PEERS")) throw new RuntimeException("LIST failed: " + resp);
@@ -37,6 +55,11 @@ public class TrackerClient {
         return out;
     }
 
+    /**
+     * Envía una peticion al tracker y recibe respuesta.
+     * @param line Linea de comando a enviar
+     * @return Respuesta del tracker
+     */
     private String request(String line) {
         try (Socket s = new Socket(host, port);
              BufferedWriter out = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
@@ -50,10 +73,18 @@ public class TrackerClient {
         }
     }
 
+    /**
+     * Clase que representa una dirección host:puerto.
+     */
     public static class HostPort {
         public final String host;
         public final int port;
 
+        /**
+         * Constructor que inicializa host y puerto.
+         * @param host Dirección host
+         * @param port Numero de puerto
+         */
         public HostPort(String host, int port) {
             this.host = host;
             this.port = port;

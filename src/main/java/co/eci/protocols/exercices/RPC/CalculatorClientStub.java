@@ -4,6 +4,10 @@ import java.io.*;
 import java.net.Socket;
 import java.util.UUID;
 
+/**
+ * Stub cliente para el servicio de calculadora RPC.
+ * Actua como proxy para invocaciones remotas de metodos.
+ */
 public class CalculatorClientStub implements CalculatorService {
     private final String host;
     private final int port;
@@ -29,6 +33,11 @@ public class CalculatorClientStub implements CalculatorService {
         return parseResultOrThrow(id, response);
     }
 
+    /**
+     * Envía una peticion RPC al servidor.
+     * @param request Mensaje RPC formateado
+     * @return Respuesta del servidor
+     */
     private String send(String request) {
         try (Socket socket = new Socket(host, port);
              BufferedWriter out = new BufferedWriter(new
@@ -47,6 +56,12 @@ public class CalculatorClientStub implements CalculatorService {
         }
     }
 
+    /**
+     * Parsea la respuesta RPC y extrae el resultado.
+     * @param id ID de la peticion esperada
+     * @param responseLine Linea de respuesta del servidor
+     * @return Resultado entero de la operacion
+     */
     private int parseResultOrThrow(String id, String responseLine) {
         if (responseLine == null) throw new RuntimeException("Empty response");
         var resp = RpcProtocol.parseLine(responseLine);
