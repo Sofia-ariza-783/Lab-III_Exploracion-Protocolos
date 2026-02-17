@@ -7,13 +7,13 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
 public class ExternalClient implements ChatUser {
-    ChatUser echoServer;
+    private static Scanner scanner = new Scanner(System.in);
+    private ChatUser echoServer;
 
     public ExternalClient(String ipRMIregistry,
                           int puertoRMIregistry, String nombreDePublicacion) {
         try {
-            ChatUser echoServer =
-                    (ChatUser) UnicastRemoteObject.exportObject(this, 0);
+            echoServer = (ChatUser) UnicastRemoteObject.exportObject(this, 0);
             Registry registry = LocateRegistry.getRegistry(ipRMIregistry, puertoRMIregistry);
             registry.rebind(nombreDePublicacion, echoServer);
             System.out.println("Echo server ready...");
@@ -24,31 +24,35 @@ public class ExternalClient implements ChatUser {
     }
 
     public static void main(String[] args) {
-        ExternalClient ec = new ExternalClient("127.0.0.2", 23001, "echoServer");
-        ec.ejecutaServicio("127.0.0.1", 23000, "echoServer");
+        System.out.print("Ingrese la ip del User2: ");
+        String ipAddress = scanner.nextLine();
+        System.out.print("Ingrese el puerto del User2: ");
+        int port = scanner.nextInt();
+        ExternalClient ec = new ExternalClient(ipAddress, port, "externalUser");
+        ec.ejecutaServicio(ipAddress, port, "internalUser");
     }
 
     public void ejecutaServicio(String ipRmiregistry, int puertoRmiRegistry,
                                 String nombreServicio) {
-        Scanner scanner = new Scanner(System.in);
-        String inputLine = " ";
+        System.out.print("Tu: ");
+        String inputLine = scanner.nextLine();
         while (!inputLine.equals("Salir")) {
-            inputLine = scanner.nextLine();
             try {
                 Registry registry = LocateRegistry.getRegistry(ipRmiregistry, puertoRmiRegistry);
                 echoServer = (ChatUser) registry.lookup(nombreServicio);
 
-                System.out.println("Tu: " + inputLine);
                 echoServer.messaging(inputLine);
             } catch (Exception e) {
                 System.err.println("Hay un problema:");
                 e.printStackTrace();
             }
+            System.out.print("Tu: ");
+            inputLine = scanner.nextLine();
         }
         scanner.close();
     }
 
     public void messaging(String cadena) throws RemoteException {
-        System.out.println("User1: " + cadena);
+        System.out.println("\nUser1: " + cadena);
     }
 }
