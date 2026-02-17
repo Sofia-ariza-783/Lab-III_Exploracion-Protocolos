@@ -3,6 +3,7 @@ package co.eci.protocols.exercices.url;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+//Ejercicio 3.1
 public class URLs {
 
     public static void methods(){

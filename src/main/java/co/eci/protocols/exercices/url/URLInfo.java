@@ -7,7 +7,7 @@ import java.net.URL;
 
 public class URLInfo {
 
-
+    //Ejercicio 3.2
     public static void  GenerateURLInfo(String url){
         try {
             URL sampleURL = new URL(url);

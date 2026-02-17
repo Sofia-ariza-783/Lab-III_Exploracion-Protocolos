@@ -1,70 +1,113 @@
 package co.eci.protocols.exercices.webService;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+
+//Ejercicio 4.5.1
 public class HttpServerPro {
-    public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = null;
-        try {
-            serverSocket = new ServerSocket(35000);
-        } catch (IOException e) {
-            System.err.println("Could not listen on port: 35000.");
-            System.exit(1);
-        }
-        Socket clientSocket = null;
-        try {
-            System.out.println("Listo para recibir ...");
-            clientSocket = serverSocket.accept();
-        } catch (IOException e) {
-            System.err.println("Accept failed.");
-            System.exit(1);
-        }
-        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(
-                        clientSocket.getInputStream()));
-        String inputLine, outputLine;
 
-        while ((inputLine = in.readLine()) != null) {
-            System.out.println("Received: " + inputLine);
-            if (!in.ready()) {
-                break;
+    private static final Path WEB_ROOT = Paths.get(
+            "src", "main", "java", "co", "eci", "protocols", "exercices", "webService", "info"
+    );
+
+    public static void main(String[] args) throws IOException {
+        System.out.println("Working dir: " + System.getProperty("user.dir"));
+
+        try (ServerSocket serverSocket = new ServerSocket(35000)) {
+            System.out.println("Servidor escuchando en http://localhost:35000");
+
+            while (true) {
+                try (Socket clientSocket = serverSocket.accept()) {
+                    handleRequest(clientSocket);
+                } catch (Exception e) {
+                    System.err.println("Error: " + e.getMessage());
+                }
             }
         }
+    }
 
-        String body =
-                "<!DOCTYPE html>"
-                        + "<html><head><meta charset=\"UTF-8\"><title>Hello</title></head>"
-                        + "<body>"
-                        + "<h1>Hello World</h1>"
-                        + "<ul>"
-                        + "<li><a href=\"/images/0c8513d4db5e903e501f8461d4146345.jpg\">0c8513d4db5e903e501f8461d4146345.jpg</a></li>"
-                        + "<li><a href=\"/images/5e196899ff4b98d4352d1ba7337db1ee.jpg\">5e196899ff4b98d4352d1ba7337db1ee.jpg</a></li>"
-                        + "<li><a href=\"/images/OIP.png\">OIP.png</a></li>"
-                        + "</ul>"
-                        + "</body>"
-                        + "</html>";
+    private static void handleRequest(Socket clientSocket) throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        OutputStream out = clientSocket.getOutputStream();
 
-        String response =
-                "HTTP/1.1 200 OK\r\n"
-                        + "Content-Type: text/html; charset=UTF-8\r\n"
-                        + "Content-Length: " + body.getBytes("UTF-8").length + "\r\n"
-                        + "Connection: close\r\n"
-                        + "\r\n"
-                        + body;
+        String requestLine = in.readLine();
+        if (requestLine == null || requestLine.isBlank()) return;
 
-        while (response != "hola") {
-            out.print(response);
+        String[] parts = requestLine.split(" ");
+        String method = parts[0];
+        String uri = parts.length > 1 ? parts[1] : "/";
+
+        String line;
+        while ((line = in.readLine()) != null && !line.isEmpty()) { }
+
+        System.out.println("Request: " + requestLine);
+
+        if (!"GET".equals(method)) {
+            sendText(out, "405 Method Not Allowed", "text/plain; charset=UTF-8", "Solo GET");
+            return;
         }
 
-        out.close();
-        in.close();
-        clientSocket.close();
-        serverSocket.close();
+        if (uri.equals("/")) uri = "/index.html";
+
+        if (uri.contains("..")) {
+            sendText(out, "400 Bad Request", "text/plain; charset=UTF-8", "Ruta inválida");
+            return;
+        }
+
+        Path filePath = WEB_ROOT.resolve(uri.substring(1)).normalize();
+
+        if (!filePath.startsWith(WEB_ROOT)) {
+            sendText(out, "403 Forbidden", "text/plain; charset=UTF-8", "Acceso denegado");
+            return;
+        }
+
+        if (!Files.exists(filePath) || Files.isDirectory(filePath)) {
+            sendText(out, "404 Not Found", "text/plain; charset=UTF-8",
+                    "No encontrado: " + filePath.toString());
+            return;
+        }
+
+        byte[] data = Files.readAllBytes(filePath);
+        String contentType = guessContentType(filePath);
+
+        String headers =
+                "HTTP/1.1 200 OK\r\n" +
+                        "Content-Type: " + contentType + "\r\n" +
+                        "Content-Length: " + data.length + "\r\n" +
+                        "Connection: close\r\n" +
+                        "\r\n";
+
+        out.write(headers.getBytes("UTF-8"));
+        out.write(data);
+        out.flush();
+    }
+
+    private static void sendText(OutputStream out, String status, String contentType, String body) throws IOException {
+        byte[] bytes = body.getBytes("UTF-8");
+        String headers =
+                "HTTP/1.1 " + status + "\r\n" +
+                        "Content-Type: " + contentType + "\r\n" +
+                        "Content-Length: " + bytes.length + "\r\n" +
+                        "Connection: close\r\n" +
+                        "\r\n";
+        out.write(headers.getBytes("UTF-8"));
+        out.write(bytes);
+        out.flush();
+    }
+
+    private static String guessContentType(Path filePath) {
+        String name = filePath.getFileName().toString().toLowerCase();
+        if (name.endsWith(".html") || name.endsWith(".htm")) return "text/html; charset=UTF-8";
+        if (name.endsWith(".css")) return "text/css; charset=UTF-8";
+        if (name.endsWith(".js")) return "application/javascript; charset=UTF-8";
+        if (name.endsWith(".png")) return "image/png";
+        if (name.endsWith(".jpg") || name.endsWith(".jpeg")) return "image/jpeg";
+        if (name.endsWith(".gif")) return "image/gif";
+        return "application/octet-stream";
     }
 }
